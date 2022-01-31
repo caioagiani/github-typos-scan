@@ -11,11 +11,10 @@
   <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/caioagiani/github-typos-scan">
   <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/caioagiani/github-typos-scan">
   <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/caioagiani/github-typos-scan">
-  <img alt="NPM downloads" src="https://img.shields.io/npm/dt/github-typos-scan?color=blue">
   <img alt="GitHub license" src="https://img.shields.io/badge/license-GNU%20AGPL-blue.svg">
 </div>
 
-Simple tool to look for typos in github repositories
+<h3 align="left">Simple tool to look for typos in github repositories</h3>
 
 ![screenshot-terminal-tools](.github/assets/terminal.png)
 
