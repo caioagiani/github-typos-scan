@@ -1,0 +1,25 @@
+{
+  "name": "search-typo",
+  "version": "0.1.0",
+  "main": "src/index.js",
+  "description": "Typos github scan",
+  "license": "MIT",
+  "keywords": [
+    "tools",
+    "typos",
+    "word-typos",
+    "typos-check",
+    "typos-github-scan"
+  ],
+  "author": {
+    "name": "Caio Agiani",
+    "email": "caio.agiani14@gmail.com",
+    "url": "https://www.linkedin.com/in/caioagiani"
+  },
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "puppeteer": "^13.1.2"
+  }
+}
