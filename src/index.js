@@ -2,7 +2,7 @@ const client = require("./lib/client");
 const { enUs } = require("./utils/words-typos");
 
 (async () => {
-  const urlRepository = "https://github.com/CheetahTemplate3/cheetah3";
+  const urlRepository = "YOUR_GITHUB_URL_REPOSITORY";
 
   await client.init();
 
