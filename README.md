@@ -38,7 +38,7 @@ $ yarn start or npm run start
 
 ```js
 (async () => {
-  const urlRepository = "Github Repository"; // https://github.com/CheetahTemplate3/cheetah3
+  const urlRepository = "YOUR_GITHUB_URL_REPOSITORY"; // https://github.com/CheetahTemplate3/cheetah3
 
   await client.init();
 
