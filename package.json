@@ -1,6 +1,6 @@
 {
   "name": "search-typo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "src/index.js",
   "description": "Typos github scan",
   "license": "MIT",

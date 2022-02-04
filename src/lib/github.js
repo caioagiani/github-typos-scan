@@ -1,6 +1,5 @@
 const client = require("./client");
 const { fgGreen, fgRed } = require("../utils/color");
-const { delay } = require("../utils/delay");
 
 module.exports = async (repository, word) => {
   const url = `${repository}/search?q=${word}&type=code`;
@@ -18,5 +17,5 @@ module.exports = async (repository, word) => {
 
   console.log(color, `[${word.toUpperCase()}]: FOUND: ${countTypos} - ${url}`);
 
-  await delay(6500);
+  await client.page.waitForTimeout(6500);
 };
