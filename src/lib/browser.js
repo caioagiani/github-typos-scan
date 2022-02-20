@@ -1,25 +1,51 @@
-const puppeteer = require("puppeteer");
-const client = require("./client");
-const { reset } = require("../utils/color");
+const puppeteer = require('puppeteer');
 
-module.exports = {
-  launch: async (options) => {
-    const browser = await puppeteer.launch({
+function createBrowserInstance() {
+  let browser = null;
+  let page = null;
+
+  const launch = async (options) => {
+    const browserLaunched = await puppeteer.launch({
       headless: true,
-      args: ["--no-sandbox"],
+      args: ['--no-sandbox'],
       ...options,
     });
 
-    console.log(reset, "[!] Initializing scan...");
+    const pageCreated = await browserLaunched.newPage();
 
-    const page = await browser.newPage();
+    browser = browserLaunched;
+    page = pageCreated;
+  };
 
-    client.browser = browser;
-    client.page = page;
-  },
-  close: () => {
-    console.log(reset, "[!] Closing session...");
+  const navigateToUrl = async (
+    url,
+    options = {
+      waitUntil: 'load',
+      timeout: 0,
+    },
+  ) => page.goto(url, options);
 
-    return client.browser.close();
-  },
+  const evaluate = async (functionToBeEvaluatedInPage) => page
+    .evaluate(functionToBeEvaluatedInPage);
+
+  const wait = async (timeoutInMilliseconds) => page.waitForTimeout(timeoutInMilliseconds);
+
+  const close = async () => {
+    if (!browser) return;
+    await browser.close();
+    browser = null;
+    page = null;
+  };
+
+  return {
+    close,
+    evaluate,
+    launch,
+    navigateToUrl,
+    wait,
+  };
+}
+
+module.exports = {
+  createBrowserInstance,
 };
