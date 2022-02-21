@@ -1,5 +1,5 @@
 {
-  "name": "search-typo",
+  "name": "github-typos-scan",
   "version": "0.1.1",
   "main": "src/index.js",
   "description": "Typos github scan",
@@ -16,10 +16,22 @@
     "email": "caio.agiani14@gmail.com",
     "url": "https://www.linkedin.com/in/caioagiani"
   },
+  "bin": {
+    "github-typos-scan": "./src/bin/cli.js"
+  },
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "test": "jest"
   },
   "dependencies": {
+    "commander": "^9.0.0",
     "puppeteer": "^13.1.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "eslint": "^8.9.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
+    "jest": "^27.5.1"
   }
 }
