@@ -1,22 +1,59 @@
-const client = require("./client");
-const { fgGreen, fgRed } = require("../utils/color");
-const { delay } = require("../utils/delay");
+const { fgGreen, fgRed, reset } = require('../utils/color');
+const { createBrowserInstance } = require('./browser');
 
-module.exports = async (repository, word) => {
-  const url = `${repository}/search?q=${word}&type=code`;
+const validGithubRepositoryUrlRegex = /https:\/\/(www\.)?github\.com\/.*\/.+/;
 
-  await client.page.goto(url, {
-    waitUntil: "load",
-    timeout: 0,
-  });
+function githubClient() {
+  const browserInstance = createBrowserInstance();
+  let githubRepositoryUrl = '';
 
-  const countTypos = await client.page.evaluate(
-    () => +document.querySelector('span[data-search-type="Code"]').innerHTML
-  );
+  const validateUrl = (url) => {
+    const isValid = validGithubRepositoryUrlRegex.test(url);
 
-  const color = countTypos > 0 ? fgGreen : fgRed;
+    if (!isValid) {
+      throw new Error('This URL is not from a Github Repository');
+    }
+  };
 
-  console.log(color, `[${word.toUpperCase()}]: FOUND: ${countTypos} - ${url}`);
+  const init = async (repositoryUrl) => {
+    githubRepositoryUrl = repositoryUrl;
+    validateUrl(repositoryUrl);
+    console.log(reset, '[!] Initializing scan...');
+    await browserInstance.launch();
+  };
 
-  await delay(6500);
+  const scan = async (word) => {
+    const url = `${githubRepositoryUrl}/search?q=${word}&type=code`;
+
+    await browserInstance.navigateToUrl(url);
+
+    const countTypos = await browserInstance.evaluate(
+      () => +document.querySelector('span[data-search-type="Code"]').innerHTML,
+    );
+
+    const color = countTypos > 0 ? fgGreen : fgRed;
+
+    console.log(
+      color,
+      `[${word.toUpperCase()}]: FOUND: ${countTypos} - ${url}`,
+    );
+
+    await browserInstance.wait(6500);
+  };
+
+  const close = async () => {
+    console.log(reset, '[!] Closing session...');
+    await browserInstance.close();
+  };
+
+  return {
+    init,
+    scan,
+    close,
+    validateUrl,
+  };
+}
+
+module.exports = {
+  githubClient,
 };

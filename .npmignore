@@ -1,0 +1,5 @@
+coverage
+tests
+.github
+jest.config.js
+.editorconfig

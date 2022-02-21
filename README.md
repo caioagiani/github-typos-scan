@@ -28,17 +28,29 @@ $ git clone git@github.com:caioagiani/github-typos-scan.git
 $ cd github-typos-scan
 
 # Install dependencies
-$ yarn install or npm install
-
-# Start application
-$ yarn start or npm run start
+$ npm install
 ```
 
 ## Usage
+### As a CLI application:
+
+```bash
+$ npm install -g github-typos-scan
+
+$ github-typos-scan --url https://github.com/caioagiani/github-typos-scan
+```
+
+### As a NodeJS application:
+
+- Follow the [Installation](#installation) process;
+- Replace the line that says `YOUR_GITHUB_URL_REPOSITORY` at [src/index.js](./src/index.js) with the url of a given repository you want to scan;
+- Run `npm run start`.
+
+Example:
 
 ```js
 (async () => {
-  const urlRepository = "Github Repository"; // https://github.com/CheetahTemplate3/cheetah3
+  const urlRepository = "https://github.com/CheetahTemplate3/cheetah3";
 
   await client.init();
 
@@ -48,6 +60,24 @@ $ yarn start or npm run start
 
   client.close();
 })();
+```
+
+## Development
+```bash
+# Download project
+$ git clone git@github.com:caioagiani/github-typos-scan.git
+
+# Join folder
+$ cd github-typos-scan
+
+# Install dependencies
+$ npm install
+
+# Install this app as a global module
+$ npm install -g .
+
+# Run the app
+$ github-typos-scan --url https://github.com/caioagiani/github-typos-scan
 ```
 
 ## License
