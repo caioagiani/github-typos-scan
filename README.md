@@ -16,7 +16,7 @@
 
 <h3 align="left">Simple tool to look for typos in github repositories</h3>
 
-![screenshot-terminal-tools](.github/assets/terminal.png)
+![screenshot-terminal-tools](https://github.com/caioagiani/github-typos-scan/blob/main/.github/assets/terminal.png)
 
 ## Installation
 
@@ -32,6 +32,7 @@ $ npm install
 ```
 
 ## Usage
+
 ### As a CLI application:
 
 ```bash
@@ -52,17 +53,12 @@ Example:
 (async () => {
   const urlRepository = "https://github.com/CheetahTemplate3/cheetah3";
 
-  await client.init();
-
-  for (const word of enUs) {
-    await client.github(urlRepository, word);
-  }
-
-  client.close();
+  await scanGithubRepository(urlRepository);
 })();
 ```
 
 ## Development
+
 ```bash
 # Download project
 $ git clone git@github.com:caioagiani/github-typos-scan.git
@@ -82,5 +78,5 @@ $ github-typos-scan --url https://github.com/caioagiani/github-typos-scan
 
 ## License
 
-Copyright © 2021 [caioagiani](https://github.com/caioagiani).<br />
+Copyright © 2022 [caioagiani](https://github.com/caioagiani).<br />
 Este projeto é licenciado [GNU AGPL](https://github.com/caioagiani/github-typos-scan/blob/master/LICENSE).
