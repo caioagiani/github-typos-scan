@@ -5,6 +5,7 @@
     "browser": true
   },
   "rules": {
+    "no-console": "off",
     "no-restricted-syntax": [
       "error",
       {
