@@ -1,13 +1,12 @@
 const { fgGreen, fgRed, reset } = require('../utils/color');
 const { createBrowserInstance } = require('./browser');
 
-const validGithubRepositoryUrlRegex = /https:\/\/(www\.)?github\.com\/.*\/.+/;
-
 function githubClient() {
   const browserInstance = createBrowserInstance();
   let githubRepositoryUrl = '';
 
   const validateUrl = (url) => {
+    const validGithubRepositoryUrlRegex = /https:\/\/(www\.)?github\.com\/.*\/.+/;
     const isValid = validGithubRepositoryUrlRegex.test(url);
 
     if (!isValid) {

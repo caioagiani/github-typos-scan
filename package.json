@@ -5,6 +5,7 @@
   "description": "Typos github scan",
   "license": "MIT",
   "keywords": [
+    "cli",
     "tools",
     "typos",
     "word-typos",
@@ -16,12 +17,21 @@
     "email": "caio.agiani14@gmail.com",
     "url": "https://www.linkedin.com/in/caioagiani"
   },
+  "homepage": "https://github.com/caioagiani/github-typos-scan",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caioagiani/github-typos-scan"
+  },
+  "bugs": {
+    "url": "https://github.com/caioagiani/github-typos-scan/issues"
+  },
   "bin": {
     "github-typos-scan": "./src/bin/cli.js"
   },
   "scripts": {
     "start": "node src/index.js",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint . --fix --ext .js"
   },
   "dependencies": {
     "commander": "^9.0.0",

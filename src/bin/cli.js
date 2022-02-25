@@ -4,23 +4,23 @@ const packageJSON = require('../../package.json');
 const { scanGithubRepository } = require('../scan');
 
 program
-  .name('github-typo-scan')
+  .name('github-typos-scan')
   .description('CLI to find typos in a Github Repository')
   .version(packageJSON.version)
+  .usage('-u <url>')
   .option('-u, --url <char>', 'URL of the repository to scan')
-  .parse();
+  .parse(process.argv);
 
-const main = async () => {
+(async () => {
   const { url } = program.opts();
 
   if (!url) {
     console.error(
       'No repository URL were provided. Please ensure to provide the --url option.',
     );
+
     return;
   }
 
   await scanGithubRepository(url);
-};
-
-main();
+})();
