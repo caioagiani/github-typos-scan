@@ -1,55 +1,52 @@
+const { request } = require('@octokit/request');
 const { fgGreen, fgRed, reset } = require('../utils/color');
-const { createBrowserInstance } = require('./browser');
+const { sleep } = require('../utils/sleep');
 
 function githubClient() {
-  const browserInstance = createBrowserInstance();
-  let githubRepositoryUrl = '';
+  let githubRepositoryName = '';
+  let delayBetweenRequests = 0;
 
-  const validateUrl = (url) => {
-    const validGithubRepositoryUrlRegex = /https:\/\/(www\.)?github\.com\/.*\/.+/;
-    const isValid = validGithubRepositoryUrlRegex.test(url);
+  const validateGithubRepositoryName = async (repositoryName = '') => {
+    const result = await request(`GET /repos/${repositoryName}`).catch((err) => err.response);
 
-    if (!isValid) {
-      throw new Error('This URL is not from a Github Repository');
+    switch (result.status) {
+      case 403:
+        throw new Error('You don\'t have access to this repository.');
+      case 404:
+        throw new Error('Repository not found.');
+      case 301:
+        throw new Error('Repository moved permanently.');
+      default:
     }
   };
 
-  const init = async (repositoryUrl) => {
-    githubRepositoryUrl = repositoryUrl;
-    validateUrl(repositoryUrl);
+  const init = async (repositoryName) => {
+    await validateGithubRepositoryName(repositoryName);
+    githubRepositoryName = repositoryName;
+    const { data } = await request('GET /rate_limit');
+    const { limit } = data.resources.search;
+
+    delayBetweenRequests = Math.floor((60 * 1000) / limit);
     console.log(reset, '[!] Initializing scan...');
-    await browserInstance.launch();
   };
 
   const scan = async (word) => {
-    const url = `${githubRepositoryUrl}/search?q=${word}&type=code`;
+    const query = `${word}+repo:${githubRepositoryName}`;
 
-    await browserInstance.navigateToUrl(url);
+    const result = await request('GET /search/code', {
+      q: query,
+    });
 
-    const countTypos = await browserInstance.evaluate(
-      () => +document.querySelector('span[data-search-type="Code"]').innerHTML,
-    );
+    const color = result.data.total_count > 0 ? fgGreen : fgRed;
 
-    const color = countTypos > 0 ? fgGreen : fgRed;
+    console.log(color, `[${word.toUpperCase()}]: FOUND: ${result.data.total_count} - ${githubRepositoryName}`);
 
-    console.log(
-      color,
-      `[${word.toUpperCase()}]: FOUND: ${countTypos} - ${url}`,
-    );
-
-    await browserInstance.wait(6500);
-  };
-
-  const close = async () => {
-    console.log(reset, '[!] Closing session...');
-    await browserInstance.close();
+    await sleep(delayBetweenRequests);
   };
 
   return {
     init,
     scan,
-    close,
-    validateUrl,
   };
 }
 
