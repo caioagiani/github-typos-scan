@@ -4,7 +4,9 @@ class GithubAPIProvider {
   constructor(authorizationKey = null) {
     if (authorizationKey) {
       this.request = request.defaults({
-        headers: `token ${authorizationKey}`,
+        headers: {
+          authorization: `token ${authorizationKey}`,
+        },
       });
     } else {
       this.request = request.defaults();
