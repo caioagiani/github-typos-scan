@@ -1,55 +1,47 @@
-const { mockPuppeteer } = require('../mock/mock-puppeteer');
 const { githubClient } = require('../../src/lib/github');
-const browser = require('../../src/lib/browser');
+const { GithubAPIProviderMock } = require('../mock/github-api-provider-mock');
 
-jest.mock('puppeteer', () => mockPuppeteer);
-jest.mock('../../src/lib/browser');
-
+let githubAPIProviderMock;
+let github;
 describe('Github', () => {
-  const browserSpy = {
-    launch: jest.fn(),
-    navigateToUrl: jest.fn(),
-    evaluate: jest.fn((callback) => callback()),
-    wait: jest.fn(),
-    close: jest.fn(),
-  };
+  beforeAll(async () => {
+    githubAPIProviderMock = new GithubAPIProviderMock({
+      fakeRepositories: [
+        {
+          name: 'fakeownername/fakerepositoryname',
+        },
+      ],
+      fakeSearchCode: [
+        {
+          word: 'misspelled-word',
+        },
+      ],
+      fakeRateLimit: {
+        search: 60,
+      },
+    });
 
-  beforeEach(() => {
-    jest.restoreAllMocks();
-    jest
-      .spyOn(browser, 'createBrowserInstance')
-      .mockImplementation(() => browserSpy);
+    github = githubClient();
+    github.useCustomGithubProvider(githubAPIProviderMock);
   });
 
-  it('Should call browser with correct params', async () => {
-    const querySelectorSpy = jest
-      .spyOn(document, 'querySelector')
-      .mockReturnValueOnce({
-        innerHTML: '0',
-      });
-    const logSpy = jest.spyOn(console, 'log');
+  it('should throw an error of repository not found', async () => {
+    await expect(async () => {
+      await github.init('notfoundrepo/notfoundrepo');
+    }).rejects.toEqual(new Error('Repository not found.'));
+  });
 
-    const params = {
-      repositoryUrl: 'https://github.com/caioagiani/github-typos-scan',
-      word: 'evaluated',
-    };
+  it('should return true because of a misspelled-word', async () => {
+    await github.init('fakeownername/fakerepositoryname');
+    const sut = await github.scan('misspelled-word');
 
-    const sut = githubClient();
+    expect(sut).toEqual(true);
+  });
 
-    await sut.init(params.repositoryUrl);
-    await sut.scan(params.word);
-    await sut.close();
+  it("should return false because there isn't a misspelled-word", async () => {
+    await github.init('fakeownername/fakerepositoryname');
+    const sut = await github.scan('some-word');
 
-    expect(browserSpy.launch).toBeCalledTimes(1);
-    expect(browserSpy.navigateToUrl).toBeCalledWith(
-      `${params.repositoryUrl}/search?q=${params.word}&type=code`,
-    );
-    expect(querySelectorSpy).toBeCalledWith('span[data-search-type="Code"]');
-    expect(logSpy).toBeCalledWith(
-      expect.anything(),
-      '[EVALUATED]: FOUND: 0 - https://github.com/caioagiani/github-typos-scan/search?q=evaluated&type=code',
-    );
-    expect(browserSpy.wait).toBeCalledWith(6500);
-    expect(browserSpy.close).toBeCalledTimes(1);
+    expect(sut).toEqual(false);
   });
 });

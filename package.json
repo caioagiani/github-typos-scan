@@ -34,8 +34,8 @@
     "lint": "eslint . --fix --ext .js"
   },
   "dependencies": {
-    "commander": "^9.0.0",
-    "puppeteer": "^13.1.2"
+    "@octokit/request": "^5.6.3",
+    "commander": "^9.0.0"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",

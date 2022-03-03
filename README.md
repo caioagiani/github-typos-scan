@@ -38,22 +38,31 @@ $ npm install
 ```bash
 $ npm install -g github-typos-scan
 
-$ github-typos-scan --url https://github.com/caioagiani/github-typos-scan
+$ github-typos-scan --name caioagiani/github-typos-scan
 ```
 
 ### As a NodeJS application:
 
 - Follow the [Installation](#installation) process;
-- Replace the line that says `YOUR_GITHUB_URL_REPOSITORY` at [src/index.js](./src/index.js) with the url of a given repository you want to scan;
+- Replace the line that says `YOUR_REPOSITORY_OWNER/YOUR_REPOSITORY_NAME` at [src/index.js](./src/index.js) with the owner and name of a given repository you want to scan;
 - Run `npm run start`.
 
 Example:
 
 ```js
 (async () => {
-  const urlRepository = "https://github.com/CheetahTemplate3/cheetah3";
+  const repositoryName = "caioagiani/github-typos-scan";
 
-  await scanGithubRepository(urlRepository);
+  await scanGithubRepository(repositoryName);
+})();
+```
+
+With authorization (not required):
+```js
+(async () => {
+  const repositoryName = "caioagiani/github-typos-scan";
+
+  await scanGithubRepository(repositoryName, "<YOUR_PERSONAL_ACCESS_TOKEN>");
 })();
 ```
 
@@ -73,7 +82,7 @@ $ npm install
 $ npm install -g .
 
 # Run the app
-$ github-typos-scan --url https://github.com/caioagiani/github-typos-scan
+$ github-typos-scan --name caioagiani/github-typos-scan
 ```
 
 ## License
