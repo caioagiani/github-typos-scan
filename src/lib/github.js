@@ -36,9 +36,9 @@ function githubClient() {
     await validateGithubRepositoryName(repositoryName);
     githubRepositoryName = repositoryName;
     const rateLimits = await githubAPIProvider.getRateLimits();
-    const { limit } = rateLimits.resources.search;
+    const { remaining } = rateLimits.resources.search;
 
-    delayBetweenRequests = Math.floor((60 * 1000) / limit);
+    delayBetweenRequests = Math.floor((60 * 1000) / remaining);
     console.log(reset, '[!] Initializing scan...');
   };
 
