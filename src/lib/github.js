@@ -29,7 +29,9 @@ function githubClient() {
   };
 
   const init = async (repositoryName, authorizationKey = null) => {
-    githubAPIProvider = new GithubAPIProvider(authorizationKey);
+    if (!githubAPIProvider) {
+      githubAPIProvider = new GithubAPIProvider(authorizationKey);
+    }
 
     await validateGithubRepositoryName(repositoryName);
     githubRepositoryName = repositoryName;
@@ -50,6 +52,10 @@ function githubClient() {
     console.log(color, `[${word.toUpperCase()}]: FOUND: ${searchCodeResults.total_count} - ${githubRepositoryName}`);
 
     await sleep(delayBetweenRequests);
+
+    if (searchCodeResults.total_count > 0) return true;
+
+    return false;
   };
 
   return {
