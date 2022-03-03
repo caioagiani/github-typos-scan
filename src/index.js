@@ -1,7 +1,7 @@
 const { scanGithubRepository } = require('./scan');
 
 (async () => {
-  const urlRepository = 'YOUR_GITHUB_URL_REPOSITORY';
+  const repositoryName = 'YOUR_REPOSITORY_OWNER/YOUR_REPOSITORY_NAME';
 
-  await scanGithubRepository(urlRepository);
+  await scanGithubRepository(repositoryName);
 })();
