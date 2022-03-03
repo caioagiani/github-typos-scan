@@ -28,9 +28,9 @@ function githubClient() {
     }
   };
 
-  const init = async (repositoryName, authorizationKey = null) => {
+  const init = async (repositoryName, personalAccessToken) => {
     if (!githubAPIProvider) {
-      githubAPIProvider = new GithubAPIProvider(authorizationKey);
+      githubAPIProvider = new GithubAPIProvider(personalAccessToken);
     }
 
     await validateGithubRepositoryName(repositoryName);

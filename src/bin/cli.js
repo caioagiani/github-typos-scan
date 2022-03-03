@@ -9,10 +9,12 @@ program
   .version(packageJSON.version)
   .usage('-n <name>')
   .option('-n, --name <char>', 'name of the repository to scan')
+  .usage('-t', '<access token>')
+  .option('-t, --token <char>', 'your personal access token of Github')
   .parse(process.argv);
 
 (async () => {
-  const { name } = program.opts();
+  const { name, token } = program.opts();
 
   if (!name) {
     console.error(
@@ -22,5 +24,5 @@ program
     return;
   }
 
-  await scanGithubRepository(name);
+  await scanGithubRepository(name, token);
 })();

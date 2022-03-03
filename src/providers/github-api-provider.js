@@ -1,11 +1,11 @@
 const { request } = require('@octokit/request');
 
 class GithubAPIProvider {
-  constructor(authorizationKey = null) {
-    if (authorizationKey) {
+  constructor(personalAccessToken) {
+    if (personalAccessToken) {
       this.request = request.defaults({
         headers: {
-          authorization: `token ${authorizationKey}`,
+          authorization: `token ${personalAccessToken}`,
         },
       });
     } else {
